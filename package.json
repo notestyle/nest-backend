@@ -1,0 +1,19 @@
+{
+  "name": "nest-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/notestyle/nest-backend.git"
+  },
+  "author": "Nest IT",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/notestyle/nest-backend/issues"
+  },
+  "homepage": "https://github.com/notestyle/nest-backend#readme"
+}
