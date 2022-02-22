@@ -1,12 +1,31 @@
+const httpLib = require("http");
 const express = require("express");
+require("dotenv").config();
+const { createConnection } = require("./src/common/pg");
+var bodyParser = require("body-parser");
+const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+
 const app = express();
-const port = 8080;
 
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
+// Body Json
+app.use(bodyParser.json());
 
-console.log(`App is listening on port http://localhost:${port}`);
-app.listen(port);
+app.use(cors());
+app.options("*", cors());
 
-//http://localhost:3000
+async function createEndPoints() {
+  const connection = await createConnection();
+  fs.readdirSync(path.join(__dirname, "/src/services")).forEach((file) => {
+    require(path.join(__dirname, "/src/services", file))(app, connection);
+  });
+}
+
+// Create end points from another files
+createEndPoints();
+
+const http = httpLib.createServer(app);
+http.listen(process.env.PORT, () =>
+  console.log("HTTP API listening on port ", process.env.PORT, "!")
+);
