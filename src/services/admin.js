@@ -1,11 +1,14 @@
 const { getUsers } = require("../logic/admin");
+const { logger } = require("../common/log");
 
 module.exports = function (app, connection) {
+  // GET, POST - (login, create), PUT - update, DELETE - delete
   // postgresql
   app.get("/api/user", async (req, res) => {
     try {
       logger.info(`${req.ip} /user [get]`);
-      getUsers(req, res, connection);
+      res.send("Hi");
+      // getUsers(req, res, connection);
     } catch (err) {
       logger.error(`${req.ip} ${err}`);
       res.status(500).json({ error: err.message });
