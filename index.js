@@ -1,7 +1,7 @@
 const httpLib = require("http");
 const express = require("express");
 require("dotenv").config();
-const { createConnection } = require("./src/common/pg");
+// const { createConnection } = require("./src/common/pg");
 var bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
@@ -16,7 +16,7 @@ app.use(cors());
 app.options("*", cors());
 
 async function createEndPoints() {
-  const connection = await createConnection();
+  // const connection = await createConnection();
   fs.readdirSync(path.join(__dirname, "/src/services")).forEach((file) => {
     require(path.join(__dirname, "/src/services", file))(app, connection);
   });
