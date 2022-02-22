@@ -18,7 +18,7 @@ app.options("*", cors());
 async function createEndPoints() {
   // const connection = await createConnection();
   fs.readdirSync(path.join(__dirname, "/src/services")).forEach((file) => {
-    require(path.join(__dirname, "/src/services", file))(app, connection);
+    require(path.join(__dirname, "/src/services", file))(app);
   });
 }
 
