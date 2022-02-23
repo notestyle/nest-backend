@@ -35,7 +35,7 @@ docker run --name nest-postgres -e POSTGRES_PASSWORD=123 -d -p 5432:5432 postgre
 mongodb
 
 ```cmd
-docker run -d --name nest-mongo \
+docker run -d -p 27017:27017 --name nest-mongo \
       -e MONGO_INITDB_ROOT_USERNAME=admin \
       -e MONGO_INITDB_ROOT_PASSWORD=password \
       mongo
