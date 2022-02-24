@@ -3,6 +3,7 @@ const express = require("express");
 require("dotenv").config();
 
 // const { createConnection } = require("./src/common/pg");
+const { createConnection } = require("./src/common/mongo");
 var bodyParser = require("body-parser");
 const cors = require("cors");
 const fs = require("fs");
@@ -16,10 +17,14 @@ app.use(bodyParser.json());
 app.use(cors());
 app.options("*", cors());
 
-// const connection = await createConnection();
-fs.readdirSync(path.join(__dirname, "/src/services")).forEach((file) => {
-  require(path.join(__dirname, "/src/services", file))(app);
-});
+async function createEndpoints() {
+  const connection = await createConnection();
+  fs.readdirSync(path.join(__dirname, "/src/services")).forEach((file) => {
+    require(path.join(__dirname, "/src/services", file))(app, connection);
+  });
+}
+
+createEndpoints();
 
 const http = httpLib.createServer(app);
 http.listen(process.env.PORT, () =>

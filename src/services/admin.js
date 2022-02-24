@@ -1,5 +1,5 @@
 // const { getUsers } = require("../logic/admin");
-const { getUsers } = require("../logic/admin_mongo");
+const { getUsers, insertUser } = require("../logic/admin_mongo");
 const { logger } = require("../common/log");
 
 module.exports = function (app, connection) {
@@ -8,7 +8,7 @@ module.exports = function (app, connection) {
   app.get("/api/user", async (req, res) => {
     try {
       logger.info(`${req.ip} /user [get]`);
-      res.send("Hi");
+
       getUsers(req, res, connection);
     } catch (err) {
       logger.error(`${req.ip} ${err}`);
@@ -19,7 +19,7 @@ module.exports = function (app, connection) {
   app.post("/api/user", async (req, res) => {
     try {
       logger.info(`${req.ip} /user [post]`);
-      getUsers(req, res, connection);
+      insertUser(req, res, connection);
     } catch (err) {
       logger.error(`${req.ip} ${err}`);
       res.status(500).json({ error: err.message });

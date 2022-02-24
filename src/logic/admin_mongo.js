@@ -16,9 +16,8 @@ const getUsers = async (request, response, pool) => {
 
 const insertUser = async (request, response, pool) => {
   try {
-    const { row } = request.body;
     const collection = pool.collection("user");
-    const rows = await collection.insertOne(row).toArray();
+    await collection.insertOne(request.body);
     return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
