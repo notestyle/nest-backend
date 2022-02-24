@@ -4,8 +4,8 @@ required to install
 
 - [NodeJS](https://nodejs.org/en/download/)
 - [Docker](https://www.docker.com/products/docker-desktop)
-- [MongoDB](https://www.mongodb.com/products/compass)
-- [DBeaver](https://dbeaver.io/)
+- [Mongo Compass](https://www.mongodb.com/products/compass)
+- [DBeaver for Postgresql](https://dbeaver.io/)
 - [Postman](https://www.postman.com/downloads/)
 
 configuration
