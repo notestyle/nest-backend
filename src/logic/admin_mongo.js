@@ -2,9 +2,10 @@ const { logger } = require("../common/log");
 
 const getUsers = async (request, response, pool) => {
   try {
-    const result = ["Mongo"];
+    const collection = pool.collection("user");
+    const rows = await collection.find({}).toArray();
     return response.status(200).json({
-      data: result.rows,
+      data: rows,
     });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -15,10 +16,10 @@ const getUsers = async (request, response, pool) => {
 
 const insertUser = async (request, response, pool) => {
   try {
-    const result = ["Mongo"];
-    return response.status(200).json({
-      data: result.rows,
-    });
+    const { row } = request.body;
+    const collection = pool.collection("user");
+    const rows = await collection.insertOne(row).toArray();
+    return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
     logger.error(`${request.ip} ${error.message}`);
@@ -28,4 +29,5 @@ const insertUser = async (request, response, pool) => {
 
 module.exports = {
   getUsers,
+  insertUser,
 };

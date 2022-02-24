@@ -1,3 +1,9 @@
 const { MongoClient } = require("mongodb");
 
-const client = new MongoClient(process.env.MONGO_CONNECTION_URL);
+async function createConnection() {
+  const connection = new MongoClient(process.env.MONGO_CONNECTION_URL);
+  await connection.connect();
+  return connection;
+}
+
+module.exports = { createConnection };
