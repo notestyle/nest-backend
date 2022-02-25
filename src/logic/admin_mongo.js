@@ -1,4 +1,5 @@
 const { logger } = require("../common/log");
+var mongodb = require("mongodb");
 
 const getUsers = async (request, response, pool) => {
   try {
@@ -30,7 +31,10 @@ const deleteUser = async (request, response, pool) => {
   try {
     const { id } = request.body;
     const collection = pool.collection("users");
-    await collection.deleteOne({ _id: id });
+    const deleteResult = await collection.deleteOne({
+      _id: new mongodb.ObjectID(id),
+    });
+    logger.info(`Deleted documents id:${id} => ${deleteResult.deletedCount}`);
     return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -43,7 +47,10 @@ const updateUser = async (request, response, pool) => {
   try {
     const { id } = request.body;
     const collection = pool.collection("users");
-    await collection.updateOne({ _id: id }, { $set: request.body });
+    await collection.updateOne(
+      { _id: new mongodb.ObjectID(id) },
+      { $set: request.body }
+    );
     return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });

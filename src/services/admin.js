@@ -7,13 +7,13 @@
 // } = require("../logic/admin");
 
 // mongodb сонгосон бол доорх мөрийн uncomment
-const {
-  getUsers,
-  insertUser,
-  updateUser,
-  deleteUser,
-} = require("../logic/admin_mongo");
-const { logger } = require("../common/log");
+// const {
+//   getUsers,
+//   insertUser,
+//   updateUser,
+//   deleteUser,
+// } = require("../logic/admin_mongo");
+// const { logger } = require("../common/log");
 
 module.exports = function (app, connection) {
   /**
