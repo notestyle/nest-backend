@@ -2,7 +2,7 @@ const { logger } = require("../common/log");
 
 const getUsers = async (request, response, pool) => {
   try {
-    const collection = pool.collection("user");
+    const collection = pool.collection("users");
     const rows = await collection.find({}).toArray();
     return response.status(200).json({
       data: rows,
@@ -16,8 +16,34 @@ const getUsers = async (request, response, pool) => {
 
 const insertUser = async (request, response, pool) => {
   try {
-    const collection = pool.collection("user");
+    const collection = pool.collection("users");
     await collection.insertOne(request.body);
+    return response.status(200).json({ message: "success" });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
+
+const deleteUser = async (request, response, pool) => {
+  try {
+    const { id } = request.body;
+    const collection = pool.collection("users");
+    await collection.deleteOne({ _id: id });
+    return response.status(200).json({ message: "success" });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
+
+const updateUser = async (request, response, pool) => {
+  try {
+    const { id } = request.body;
+    const collection = pool.collection("users");
+    await collection.updateOne({ _id: id }, { $set: request.body });
     return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -29,4 +55,6 @@ const insertUser = async (request, response, pool) => {
 module.exports = {
   getUsers,
   insertUser,
+  updateUser,
+  deleteUser,
 };
