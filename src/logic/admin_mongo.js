@@ -29,10 +29,10 @@ const insertUser = async (request, response, pool) => {
 
 const deleteUser = async (request, response, pool) => {
   try {
-    const { id } = request.body;
+    const { _id } = request.body;
     const collection = pool.collection("users");
     const deleteResult = await collection.deleteOne({
-      _id: new mongodb.ObjectID(id),
+      _id: new mongodb.ObjectID(_id),
     });
     logger.info(`Deleted documents id:${id} => ${deleteResult.deletedCount}`);
     return response.status(200).json({ message: "success" });
@@ -45,10 +45,14 @@ const deleteUser = async (request, response, pool) => {
 
 const updateUser = async (request, response, pool) => {
   try {
-    const { id } = request.body;
+    const { _id } = request.body;
     const collection = pool.collection("users");
+
+    // body._id -г update дээр дамжуулж болохгүй, хасаж дамжуулах ёстой
+    delete request.body._id;
+
     await collection.updateOne(
-      { _id: new mongodb.ObjectID(id) },
+      { _id: new mongodb.ObjectID(_id) },
       { $set: request.body }
     );
     return response.status(200).json({ message: "success" });
