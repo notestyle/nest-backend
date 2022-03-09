@@ -7,13 +7,15 @@
 // } = require("../logic/admin");
 
 // mongodb сонгосон бол доорх мөрийн uncomment
-// const {
-//   getUsers,
-//   insertUser,
-//   updateUser,
-//   deleteUser,
-// } = require("../logic/admin_mongo");
-// const { logger } = require("../common/log");
+const {
+  getUsers,
+  insertUser,
+  updateUser,
+  deleteUser,
+  login,
+} = require("../logic/admin_mongo");
+const { logger } = require("../common/log");
+const { generateToken } = require("../common/auth");
 
 module.exports = function (app, connection) {
   /**
@@ -22,6 +24,17 @@ module.exports = function (app, connection) {
    * PUT - Update буюу дата засахад ашиглана => app.put()
    * DELETE - Устгахад ашиглана => app.delete()
    */
+
+  app.post("/api/login", async (req, res) => {
+    try {
+      logger.info(`${req.ip} /api/login [POST]`);
+
+      login(req, res, connection);
+    } catch (err) {
+      logger.error(`${req.ip} ${err}`);
+      res.status(500).json({ error: err.message });
+    }
+  });
 
   // endpoints
   app.get("/api/user", async (req, res) => {
