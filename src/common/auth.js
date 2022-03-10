@@ -12,7 +12,6 @@ const generateToken = (username) => {
 
 const verifyToken = (token) => {
   try {
-    console.log(token);
     var decoded = jwt.verify(token, process.env.TOKEN_SECRET);
     return generateToken(decoded.username);
   } catch (err) {

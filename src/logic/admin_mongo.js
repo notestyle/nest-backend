@@ -31,6 +31,7 @@ const getUsers = async (request, response, pool) => {
     token = verifyToken(request.headers.token);
   } catch (err) {
     response.status(401).json({ message: "Token expired" });
+    return;
   }
   try {
     const collection = pool.collection("users");
@@ -65,7 +66,7 @@ const deleteUser = async (request, response, pool) => {
     const deleteResult = await collection.deleteOne({
       _id: new mongodb.ObjectID(_id),
     });
-    logger.info(`Deleted documents id:${id} => ${deleteResult.deletedCount}`);
+    logger.info(`Deleted documents id:${_id} => ${deleteResult.deletedCount}`);
     return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
