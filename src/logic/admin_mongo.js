@@ -1,5 +1,5 @@
 const { logger } = require("../common/log");
-
+const moment = require("moment");
 var mongodb = require("mongodb");
 const { generateToken, verifyToken } = require("../common/auth");
 
@@ -11,7 +11,11 @@ const login = async (request, response, pool) => {
     if (rows && rows.length > 0) {
       return response.status(200).json({
         message: "Successfully Logged In",
+        user: rows[0],
         token: generateToken(rows[0].username),
+        tokenExpTime: moment()
+          .add(process.env.TOKEN_EXPIRE_MINUTE, "m")
+          .format("YYYY-MM-DD HH:mm:ss"),
       });
     } else {
       return response.status(401).json({
