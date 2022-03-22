@@ -13,6 +13,8 @@ const {
   updateUser,
   deleteUser,
   login,
+  insertBlog,
+  getBlog,
 } = require("../logic/admin_mongo");
 const { logger } = require("../common/log");
 const { generateToken } = require("../common/auth");
@@ -78,5 +80,25 @@ module.exports = function (app, connection) {
     }
   });
 
-  // Үргэлжлүүлэн энэ доор API уудаа нэмж бичнэ
+  // blog API
+  app.post("/api/blog", async (req, res) => {
+    try {
+      logger.info(`${req.ip} /blog [post]`);
+      insertBlog(req, res, connection);
+    } catch (err) {
+      logger.error(`${req.ip} ${err}`);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get("/api/blog", async (req, res) => {
+    try {
+      logger.info(`${req.ip} /blog [get]`);
+
+      getBlog(req, res, connection);
+    } catch (err) {
+      logger.error(`${req.ip} ${err}`);
+      res.status(500).json({ error: err.message });
+    }
+  });
 };

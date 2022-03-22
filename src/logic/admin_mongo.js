@@ -99,10 +99,46 @@ const updateUser = async (request, response, pool) => {
   }
 };
 
+const insertBlog = async (request, response, pool) => {
+  try {
+    const collection = pool.collection("blog");
+    await collection.insertOne(request.body);
+    return response.status(200).json({ message: "success" });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
+
+const getBlog = async (request, response, pool) => {
+  let token;
+  try {
+    token = verifyToken(request.headers.token);
+  } catch (err) {
+    response.status(401).json({ message: "Token expired" });
+    return;
+  }
+  try {
+    const collection = pool.collection("blog");
+    const rows = await collection.find({}).toArray();
+    return response.status(200).json({
+      data: rows,
+      token,
+    });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
+
 module.exports = {
   getUsers,
   insertUser,
   updateUser,
   deleteUser,
   login,
+  insertBlog,
+  getBlog,
 };
