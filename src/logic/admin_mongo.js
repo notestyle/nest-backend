@@ -99,18 +99,6 @@ const updateUser = async (request, response, pool) => {
   }
 };
 
-const insertBlog = async (request, response, pool) => {
-  try {
-    const collection = pool.collection("blog");
-    await collection.insertOne(request.body);
-    return response.status(200).json({ message: "success" });
-  } catch (error) {
-    response.status(500).send({ error: error.message });
-    logger.error(`${request.ip} ${error.message}`);
-    return;
-  }
-};
-
 const getBlog = async (request, response, pool) => {
   let token;
   try {
@@ -121,11 +109,25 @@ const getBlog = async (request, response, pool) => {
   }
   try {
     const collection = pool.collection("blog");
-    const rows = await collection.find({}).toArray();
+    const rows = await collection
+      .find({}, { sort: [["date", "desc"]] })
+      .toArray();
     return response.status(200).json({
       data: rows,
       token,
     });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
+
+const insertBlog = async (request, response, pool) => {
+  try {
+    const collection = pool.collection("blog");
+    await collection.insertOne(request.body);
+    return response.status(200).json({ message: "success" });
   } catch (error) {
     response.status(500).send({ error: error.message });
     logger.error(`${request.ip} ${error.message}`);
