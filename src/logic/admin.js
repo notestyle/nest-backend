@@ -5,6 +5,7 @@ const getUsers = async (request, response, pool) => {
     const result = await pool.query("SELECT * FROM users");
     return response.status(200).json({
       data: result.rows,
+      token: request.token,
     });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -22,6 +23,7 @@ const insertUser = async (request, response, pool) => {
     );
     return response.status(200).json({
       message: "success",
+      token: request.token,
     });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -39,6 +41,7 @@ const updateUser = async (request, response, pool) => {
     );
     return response.status(200).json({
       message: "success",
+      token: request.token,
     });
   } catch (error) {
     response.status(500).send({ error: error.message });
@@ -54,6 +57,7 @@ const deleteUser = async (request, response, pool) => {
     await pool.query("DELETE FROM users WHERE id = $1", [id]);
     return response.status(200).json({
       message: "success",
+      token: request.token,
     });
   } catch (error) {
     response.status(500).send({ error: error.message });
