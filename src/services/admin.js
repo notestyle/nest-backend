@@ -1,4 +1,5 @@
 const { isAuth } = require("../common/auth");
+const { logger } = require("../common/log");
 
 // postgresql сонгосон бол доорх мөрийн uncomment
 // const {
@@ -6,6 +7,7 @@ const { isAuth } = require("../common/auth");
 //   insertUser,
 //   updateUser,
 //   deleteUser,
+//   login,
 // } = require("../logic/admin");
 
 // mongodb сонгосон бол доорх мөрийн uncomment

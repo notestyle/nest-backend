@@ -1,4 +1,27 @@
 const { logger } = require("../common/log");
+const { calcToken } = require("../common/auth");
+
+const login = async (request, response, pool) => {
+  try {
+    const { username, password } = request.body;
+
+    const result = await pool.query(
+      "SELECT * FROM users WHERE username = $1 and password = $2",
+      [username, password]
+    );
+
+    const token = calcToken({ username });
+
+    return response.status(200).json({
+      data: result.rows[0],
+      token,
+    });
+  } catch (error) {
+    response.status(500).send({ error: error.message });
+    logger.error(`${request.ip} ${error.message}`);
+    return;
+  }
+};
 
 const getUsers = async (request, response, pool) => {
   try {
@@ -71,4 +94,5 @@ module.exports = {
   insertUser,
   updateUser,
   deleteUser,
+  login,
 };
