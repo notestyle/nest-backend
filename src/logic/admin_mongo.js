@@ -14,7 +14,7 @@ const login = async (request, response, pool) => {
         user: rows[0],
         token: generateToken(rows[0].username),
         tokenExpTime: moment()
-          .add(process.env.TOKEN_EXPIRE_MINUTE, "m")
+          .add(process.env.TOKEN_EXPIRE, "m")
           .format("YYYY-MM-DD HH:mm:ss"),
       });
     } else {

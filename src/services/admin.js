@@ -20,7 +20,6 @@ const { logger } = require("../common/log");
 //   insertBlog,
 //   getBlog,
 // } = require("../logic/admin_mongo");
-// const { logger } = require("../common/log");
 
 module.exports = function (app, connection) {
   /**

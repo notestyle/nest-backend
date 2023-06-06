@@ -2,15 +2,15 @@ require("dotenv").config();
 var jwt = require("jsonwebtoken");
 const { logger } = require("./log");
 
-const calcToken = (decoded) => {
+const generateToken = (decoded) => {
   let token = jwt.sign({ id: decoded.id }, process.env.TOKEN_SECRET, {
-    expiresIn: process.env.TOKEN_EXPIRE_MINUTE + "m",
+    expiresIn: process.env.TOKEN_EXPIRE,
   });
   return token;
 };
 
 const checkAuthentication = async (req) => {
-  var token = req.headers.authorization;
+  var token = req.headers.token;
   if (!token) {
     throw new Error("Unautorization!");
   }
@@ -20,7 +20,7 @@ const checkAuthentication = async (req) => {
     throw new Error("TOKEN_EXPIRED");
   }
 
-  token = await calcToken(decoded);
+  token = await generateToken(decoded);
   return token;
 };
 
@@ -36,7 +36,7 @@ const isAuth = async (req, res, next) => {
 };
 
 module.exports = {
-  calcToken,
+  generateToken,
   checkAuthentication,
   isAuth,
 };
