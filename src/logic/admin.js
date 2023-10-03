@@ -1,5 +1,5 @@
 const { logger } = require("../common/log");
-const { calcToken } = require("../common/auth");
+const { generateToken } = require("../common/auth");
 
 const login = async (request, response, pool) => {
   try {
@@ -10,7 +10,7 @@ const login = async (request, response, pool) => {
       [username, password]
     );
 
-    const token = calcToken({ username });
+    const token = generateToken({ username });
 
     return response.status(200).json({
       data: result.rows[0],
